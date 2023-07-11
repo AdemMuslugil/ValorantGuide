@@ -82,7 +82,7 @@ fun ItemListView(itemList: List<HomeScreenItemModel>) {
     ) {
         items(itemList) { item ->
             ItemRow(name = item.name, image = item.image) {
-                TODO()
+                //TODO()
             }
         }
     }

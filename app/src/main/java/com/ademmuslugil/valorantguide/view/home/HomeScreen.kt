@@ -34,12 +34,14 @@ import androidx.compose.ui.unit.dp
 import com.ademmuslugil.valorantguide.R
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.ademmuslugil.valorantguide.model.HomeScreenItemModel
 
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeScreenViewModel = hiltViewModel()
+    viewModel: HomeScreenViewModel = hiltViewModel(),
+    navController: NavController
 ) {
 
     Surface(
@@ -48,7 +50,7 @@ fun HomeScreen(
         val itemList = viewModel.getItemList(LocalContext.current)
         Column(modifier = Modifier.fillMaxSize()) {
             TopAppBar()
-            ItemListView(itemList = itemList)
+            ItemListView(itemList = itemList, navController = navController)
         }
     }
 }
@@ -75,14 +77,16 @@ fun TopAppBar() {
 }
 
 @Composable
-fun ItemListView(itemList: List<HomeScreenItemModel>) {
+fun ItemListView(itemList: List<HomeScreenItemModel>, navController: NavController) {
     LazyColumn(
         contentPadding = PaddingValues(end = 0.dp),
         modifier = Modifier.fillMaxSize()
     ) {
         items(itemList) { item ->
             ItemRow(name = item.name, image = item.image) {
-                //TODO()
+                if (item.name == "Agents"){
+                    Navigation(navController = navController)
+                }
             }
         }
     }
@@ -127,8 +131,12 @@ fun ItemRow(name: String, image: Int, listener: () -> Unit) {
     }
 }
 
+fun Navigation(navController: NavController){
+    navController.navigate("agent_screen")
+}
+
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    //HomeScreen()
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,16 +47,23 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 fun AgentsScreen(
     agentsViewModel: AgentsViewModel = hiltViewModel()
 ) {
-
+    val isLoading by agentsViewModel.isLoading.observeAsState(true)
+    val agentList by agentsViewModel.agentsList.observeAsState()
     Surface(
         color = colorResource(id = R.color.background),
         modifier = Modifier.fillMaxSize()
     ) {
         Column {
-            val agentList by agentsViewModel.agentsList.observeAsState()
             TopAppBar()
             agentsViewModel.getAgentsFromApi(LocalContext.current)
-            agentList?.data?.let { ItemListView(agentList = it) }
+
+            if (isLoading == true)
+                ShowProgress()
+
+            agentList?.data?.let {
+                ItemListView(agentList = it)
+                agentsViewModel.isLoading.value = false
+            }
         }
 
     }
@@ -77,6 +86,17 @@ private fun TopAppBar() {
             )
         }
     }
+}
+
+@Composable
+fun ShowProgress() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(color = colorResource(id = R.color.red))
+    }
+
 }
 
 @Composable

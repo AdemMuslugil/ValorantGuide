@@ -6,16 +6,12 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ademmuslugil.valorantguide.model.agents.AgentModel
-import com.ademmuslugil.valorantguide.model.agents.Data
 import com.ademmuslugil.valorantguide.service.ApiRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,6 +20,7 @@ class AgentsViewModel @Inject constructor(private val apiRepository: ApiReposito
     private val TAG = "AgentsViewModel"
     private val disposable = CompositeDisposable()
     var agentsList = MutableLiveData<AgentModel>()
+    var isLoading = MutableLiveData<Boolean>()
 
     fun getAgentsFromApi(context: Context) {
             disposable.add(
@@ -36,8 +33,8 @@ class AgentsViewModel @Inject constructor(private val apiRepository: ApiReposito
                         }
 
                         override fun onError(e: Throwable) {
+                            isLoading.value = false
                             Log.e(TAG, e.message, e)
-                            println(e.message)
                             Toast.makeText(context, "Error fetch dat", Toast.LENGTH_SHORT).show()
                         }
                     })

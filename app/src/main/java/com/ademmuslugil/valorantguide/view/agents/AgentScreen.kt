@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -28,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -59,7 +61,7 @@ fun AgentsScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         Column {
-            TopAppBar()
+            TopAppBar(navController = navController)
             agentsViewModel.getAgentsFromApi(LocalContext.current)
 
             if (isLoading == true)
@@ -75,7 +77,7 @@ fun AgentsScreen(
 }
 
 @Composable
-private fun TopAppBar() {
+private fun TopAppBar(navController: NavController) {
     Column {
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -83,11 +85,27 @@ private fun TopAppBar() {
             modifier = Modifier
                 .fillMaxHeight(8 / 100f)
                 .fillMaxWidth()
+                .padding(horizontal = 30.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_valorant_logo) ,
-                contentDescription = "Valorant icon",
-                modifier = Modifier.size(48.dp)
+                painter = painterResource(id = R.drawable.back_arrow_red) ,
+                contentDescription = "Back Arrow Icon",
+                modifier = Modifier
+                    .size(20.dp)
+                    .clickable {
+                        navController.popBackStack()
+                    }
+            )
+
+            Text(
+                    text = stringResource(id = R.string.agents_text),
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(R.font.bowlbyonesc_regular)),
+                    color = Color.White,
+                    textAlign = TextAlign.Center
+                ),
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }
@@ -133,13 +151,15 @@ fun ItemRow(
             .clickable {
                 val abilityList = arrayListOf<Ability>()
                 if (abilities != null) {
-                    for (ability in abilities){
-                        abilityList.add(Ability(
-                            description = ability.description,
-                            displayIcon = ability.displayIcon,
-                            displayName = ability.displayName,
-                            null
-                        ))
+                    for (ability in abilities) {
+                        abilityList.add(
+                            Ability(
+                                description = ability.description,
+                                displayIcon = ability.displayIcon,
+                                displayName = ability.displayName,
+                                null
+                            )
+                        )
                     }
                 }
 
@@ -154,7 +174,7 @@ fun ItemRow(
                 )
                 sharedViewModel.addAgent(agent)
                 navController.navigate("agent_detail_screen")
-                }
+            }
     ){
         Text(
             text = agentData?.displayName ?: "",

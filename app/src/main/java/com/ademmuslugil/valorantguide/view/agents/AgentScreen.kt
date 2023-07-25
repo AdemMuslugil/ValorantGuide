@@ -32,11 +32,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.ademmuslugil.valorantguide.R
+import com.ademmuslugil.valorantguide.SharedViewModel
+import com.ademmuslugil.valorantguide.model.AgentDetail
+import com.ademmuslugil.valorantguide.model.agents.Ability
 import com.ademmuslugil.valorantguide.model.agents.Data
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -45,7 +48,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 @Composable
 fun AgentsScreen(
-    agentsViewModel: AgentsViewModel = hiltViewModel()
+    agentsViewModel: AgentsViewModel = hiltViewModel(),
+    navController: NavController,
+    sharedViewModel: SharedViewModel
 ) {
     val isLoading by agentsViewModel.isLoading.observeAsState(true)
     val agentList by agentsViewModel.agentsList.observeAsState()
@@ -61,7 +66,7 @@ fun AgentsScreen(
                 ShowProgress()
 
             agentList?.data?.let {
-                ItemListView(agentList = it)
+                ItemListView(agentList = it, navController = navController, sharedViewModel = sharedViewModel)
                 agentsViewModel.isLoading.value = false
             }
         }
@@ -100,22 +105,24 @@ fun ShowProgress() {
 }
 
 @Composable
-fun ItemListView(agentList: List<Data>) {
+fun ItemListView(agentList: List<Data>, navController: NavController,sharedViewModel: SharedViewModel) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2) //show 2 items per row,
         ,contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)){
         items(agentList.size){position ->
-            ItemRow(agentName = agentList[position].displayName, agentImage = agentList[position].fullPortrait ?: "")
+            ItemRow(agentData = agentList[position], navController = navController, sharedViewModel = sharedViewModel, abilities = agentList[position].abilities)
         }
     }
 }
 
 @Composable
 fun ItemRow(
-    agentName: String,
-    agentImage: String
+   agentData: Data?,
+   abilities: List<Ability>?,
+   navController: NavController,
+   sharedViewModel: SharedViewModel
 ){
     Column(
         modifier = Modifier
@@ -124,11 +131,33 @@ fun ItemRow(
             .background(colorResource(id = R.color.background))
             .border(width = 1.dp, color = colorResource(id = R.color.red))
             .clickable {
-                //TODO
-            }
-    ) {
+                val abilityList = arrayListOf<Ability>()
+                if (abilities != null) {
+                    for (ability in abilities){
+                        abilityList.add(Ability(
+                            description = ability.description,
+                            displayIcon = ability.displayIcon,
+                            displayName = ability.displayName,
+                            null
+                        ))
+                    }
+                }
+
+
+                val agent = AgentDetail(
+                    agentName = agentData?.displayName,
+                    agentType = agentData?.role?.displayName,
+                    agentImage = agentData?.fullPortrait,
+                    agentDescription = agentData?.description,
+                    ability = abilityList,
+                    background = agentData?.background
+                )
+                sharedViewModel.addAgent(agent)
+                navController.navigate("agent_detail_screen")
+                }
+    ){
         Text(
-            text = agentName,
+            text = agentData?.displayName ?: "",
             style = TextStyle(
                 color = Color.White,
                 fontFamily = FontFamily(Font(R.font.bowlbyonesc_regular)),
@@ -139,7 +168,7 @@ fun ItemRow(
             textAlign = TextAlign.Center
         )
 
-        ImageFromUrl(url = agentImage)
+        ImageFromUrl(url = agentData?.fullPortrait ?: "")
     }
 }
 
@@ -158,10 +187,4 @@ fun ImageFromUrl(url: String) {
             .load(url)
             .centerCrop()
     }
-}
-
-@Preview
-@Composable
-fun AgentsScreenPreview() {
-    AgentsScreen()
 }

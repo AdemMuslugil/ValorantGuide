@@ -3,4 +3,9 @@
     <string name="valorant_guide">VALORANT GUIDE</string>
     <string name="weapons_text">Weapons</string>
     <string name="agents_text">Agents</string>
+    <string name="agent_details">Agent Details</string>
+    <string name="description_text">Description:</string>
+    <string name="type_text">Type:</string>
+    <string name="name_text">Name:</string>
+    <string name="abilities_text">ABILITIES</string>
 </resources>

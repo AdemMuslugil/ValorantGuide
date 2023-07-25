@@ -1,13 +1,14 @@
 package com.ademmuslugil.valorantguide.service
 
 import com.ademmuslugil.valorantguide.model.agents.AgentModel
-import com.ademmuslugil.valorantguide.model.agents.Data
 import io.reactivex.Single
 import retrofit2.http.GET
-import javax.inject.Singleton
+import retrofit2.http.Query
 
 interface ApiService {
 
     @GET("agents")
-    fun getAgents(): Single<AgentModel>
+    fun getAgents(
+        @Query("language") language:String = "en-US",
+        ): Single<AgentModel>
 }

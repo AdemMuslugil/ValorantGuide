@@ -1,7 +1,6 @@
-package com.ademmuslugil.valorantguide.model
+package com.ademmuslugil.valorantguide.model.agents
 
 import android.os.Parcelable
-import com.ademmuslugil.valorantguide.model.agents.Ability
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

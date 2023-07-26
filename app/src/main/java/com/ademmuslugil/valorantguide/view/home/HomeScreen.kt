@@ -79,14 +79,15 @@ fun TopAppBar() {
 @Composable
 fun ItemListView(itemList: List<HomeScreenItemModel>, navController: NavController) {
     LazyColumn(
-        contentPadding = PaddingValues(end = 0.dp),
+        contentPadding = PaddingValues(horizontal = 22.dp),
         modifier = Modifier.fillMaxSize()
     ) {
         items(itemList) { item ->
             ItemRow(name = item.name, image = item.image) {
                 if (item.name == "Agents"){
-                    Navigation(navController = navController)
-                }
+                    Navigation(navController = navController,"agent_screen")
+                } else
+                   Navigation(navController = navController,"weapons_screen")
             }
         }
     }
@@ -98,7 +99,7 @@ fun ItemRow(name: String, image: Int, listener: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
-            .padding(22.dp, 15.dp)
+            .padding(top = 16.dp)
             .background(colorResource(id = R.color.background))
             .border(1.dp, colorResource(id = R.color.red))
             .clickable {
@@ -131,8 +132,8 @@ fun ItemRow(name: String, image: Int, listener: () -> Unit) {
     }
 }
 
-fun Navigation(navController: NavController){
-    navController.navigate("agent_screen")
+fun Navigation(navController: NavController, route: String){
+    navController.navigate(route = route)
 }
 
 @Preview

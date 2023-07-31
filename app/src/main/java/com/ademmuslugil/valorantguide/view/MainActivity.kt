@@ -15,6 +15,7 @@ import com.ademmuslugil.valorantguide.view.agents.agentdetail.AgentDetailsScreen
 import com.ademmuslugil.valorantguide.view.home.HomeScreen
 import com.ademmuslugil.valorantguide.view.splash.SplashScreen
 import com.ademmuslugil.valorantguide.view.weapons.WeaponsScreen
+import com.ademmuslugil.valorantguide.view.weapons.weapondetails.WeaponDetailScreen
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -58,6 +59,13 @@ fun Navigation() {
 
         composable("weapons_screen") {
             WeaponsScreen(navController = navController)
+        }
+
+        composable("weapon_detail_screen/{id}") {
+            val id = navController.currentBackStackEntry?.arguments?.getString("id")
+            println("id: $id")
+            if (id!=null)
+                WeaponDetailScreen(id = id, navController = navController)
         }
     }
 

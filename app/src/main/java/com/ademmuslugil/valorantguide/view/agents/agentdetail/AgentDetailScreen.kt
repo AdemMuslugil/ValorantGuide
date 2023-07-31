@@ -124,7 +124,7 @@ private fun TopAppBar(navController: NavController) {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun AddAgentImage(
+private fun AddAgentImage(
     agentImage: String,
     background: String
 ) {
@@ -156,7 +156,7 @@ fun AddAgentImage(
 }
 
 @Composable
-fun AddAgentProperties(
+private fun AddAgentProperties(
     agentName: String,
     typeText: String,
     description: String
@@ -181,7 +181,7 @@ fun AddAgentProperties(
 }
 
 @Composable
-fun AddFeatureText(
+private fun AddFeatureText(
     feature: String,
     text: String
 ){
@@ -216,7 +216,7 @@ fun AddFeatureText(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun AddAgentAbilities(
+private fun AddAgentAbilities(
     abilityName: String,
     iconUrl:String,
     description: String
@@ -300,7 +300,7 @@ fun AddAgentAbilities(
 }
 
 @Composable
-fun InitAllAbilities(ability: List<Ability>?){
+private fun InitAllAbilities(ability: List<Ability>?){
     if (ability != null){
         ability[0].apply {
             AddAgentAbilities(
@@ -338,6 +338,6 @@ fun InitAllAbilities(ability: List<Ability>?){
 
 @Preview
 @Composable
-fun AgentDetailScreenPreview() {
+private fun AgentDetailScreenPreview() {
     //AgentDetailsScreen()
 }

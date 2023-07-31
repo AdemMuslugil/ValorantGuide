@@ -54,10 +54,6 @@ fun WeaponsScreen(
         color = colorResource(id = R.color.background),
         modifier = Modifier.fillMaxSize()
     ) {
-        weaponsList?.data?.let {
-            println(it[0].displayName)
-        }
-
         Column {
             weaponsViewModel.getWeaponsList()
             TopAppBar(navController = navController)
@@ -109,7 +105,7 @@ private fun TopAppBar(navController: NavController) {
 }
 
 @Composable
-fun ShowProgress() {
+private fun ShowProgress() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -120,9 +116,11 @@ fun ShowProgress() {
 }
 
 @Composable
-fun ItemListView(weaponList: List<Data>, navController: NavController) {
+private fun ItemListView(weaponList: List<Data>, navController: NavController) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 16.dp),
         contentPadding = PaddingValues(horizontal = 22.dp)
         ){
         items(weaponList.size){position ->
@@ -132,7 +130,7 @@ fun ItemListView(weaponList: List<Data>, navController: NavController) {
 }
 
 @Composable
-fun ItemRow(
+private fun ItemRow(
     weaponData: Data?,
     navController: NavController,
 ){
@@ -144,7 +142,7 @@ fun ItemRow(
             .background(colorResource(id = R.color.background))
             .border(width = 1.dp, color = colorResource(id = R.color.red))
             .clickable {
-                //navController.navigate("weapon_detail_screen")
+                navController.navigate("weapon_detail_screen/${weaponData?.uuid}")
             }
     ){
         Text(
@@ -165,7 +163,7 @@ fun ItemRow(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ImageFromUrl(url: String) {
+private fun ImageFromUrl(url: String) {
     //Upload image from url with glide
     GlideImage(
         model = url,

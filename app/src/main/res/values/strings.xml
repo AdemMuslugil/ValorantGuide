@@ -8,4 +8,10 @@
     <string name="type_text">Type:</string>
     <string name="name_text">Name:</string>
     <string name="abilities_text">ABILITIES</string>
+    <string name="weapon_details">Weapon Details</string>
+    <string name="cost_string">Cost:</string>
+    <string name="magazine_string">Magazine:</string>
+    <string name="wall_penetration_text">Wall penetration:</string>
+    <string name="fire_rate_text">Fire Rate:</string>
+
 </resources>

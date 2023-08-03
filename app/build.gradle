@@ -92,6 +92,10 @@ dependencies {
     //Glide
     implementation "com.github.bumptech.glide:compose:1.0.0-alpha.1"
 
+    //Shared preferences
+    implementation 'androidx.preference:preference:1.2.1'
+
+
 
 
 

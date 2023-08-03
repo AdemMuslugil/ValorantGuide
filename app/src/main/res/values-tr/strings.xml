@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ValorantGuide</string>
+    <string name="valorant_guide">VALORANT GUIDE</string>
+    <string name="weapons_text">Silahlar</string>
+    <string name="agents_text">Ajanlar</string>
+    <string name="agent_details">Ajan Detayları</string>
+    <string name="description_text">Açıklaması:</string>
+    <string name="type_text">Type:</string>
+    <string name="name_text">Adı:</string>
+    <string name="abilities_text">YETENEKLER</string>
+    <string name="weapon_details">Silah Detayları</string>
+    <string name="cost_string">Ücret:</string>
+    <string name="magazine_string">Şarjör:</string>
+    <string name="wall_penetration_text">Duvar delme:</string>
+    <string name="fire_rate_text">Atış Hızı:</string>
+    <string name="settings_text">Ayarlar</string>
+    <string name="language_text">Dil</string>
+
+</resources>

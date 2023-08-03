@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
@@ -21,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -49,18 +51,19 @@ fun HomeScreen(
     ) {
         val itemList = viewModel.getItemList(LocalContext.current)
         Column(modifier = Modifier.fillMaxSize()) {
-            TopAppBar()
+            TopAppBar(navController = navController)
             ItemListView(itemList = itemList, navController = navController)
         }
     }
 }
 
 @Composable
-fun TopAppBar() {
+private fun TopAppBar(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(10 / 100f),
+            .fillMaxHeight(10 / 100f)
+            .padding(horizontal = 30.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -71,20 +74,34 @@ fun TopAppBar() {
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 fontFamily = FontFamily(Font(R.font.bowlbyonesc_regular))
-            )
+            ),
+            modifier = Modifier.weight(1f)
         )
+
+        //Settings icon
+        Image(
+            painter = painterResource(id = R.drawable.ic_settings),
+            contentDescription = "Settings Icon",
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .size(30.dp)
+                .clickable {
+                    Navigation(navController = navController, route = "settings_screen")
+                }
+            )
     }
 }
 
 @Composable
-fun ItemListView(itemList: List<HomeScreenItemModel>, navController: NavController) {
+private fun ItemListView(itemList: List<HomeScreenItemModel>, navController: NavController) {
+    val agentText = stringResource(id = R.string.agents_text)
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 22.dp),
         modifier = Modifier.fillMaxSize()
     ) {
         items(itemList) { item ->
             ItemRow(name = item.name, image = item.image) {
-                if (item.name == "Agents"){
+                if (item.name == agentText){
                     Navigation(navController = navController,"agent_screen")
                 } else
                    Navigation(navController = navController,"weapons_screen")
@@ -94,7 +111,7 @@ fun ItemListView(itemList: List<HomeScreenItemModel>, navController: NavControll
 }
 
 @Composable
-fun ItemRow(name: String, image: Int, listener: () -> Unit) {
+private fun ItemRow(name: String, image: Int, listener: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -121,6 +138,7 @@ fun ItemRow(name: String, image: Int, listener: () -> Unit) {
             )
         )
 
+        //Category Image
         Image(
             painter = painterResource(id = image),
             contentDescription = "Category image",
@@ -132,12 +150,12 @@ fun ItemRow(name: String, image: Int, listener: () -> Unit) {
     }
 }
 
-fun Navigation(navController: NavController, route: String){
+private fun Navigation(navController: NavController, route: String){
     navController.navigate(route = route)
 }
 
 @Preview
 @Composable
-fun HomeScreenPreview() {
+private fun HomeScreenPreview() {
     //HomeScreen()
 }

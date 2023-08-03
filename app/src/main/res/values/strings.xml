@@ -13,5 +13,7 @@
     <string name="magazine_string">Magazine:</string>
     <string name="wall_penetration_text">Wall penetration:</string>
     <string name="fire_rate_text">Fire Rate:</string>
+    <string name="settings_text">Settings</string>
+    <string name="language_text">Language</string>
 
 </resources>

@@ -6,3 +6,5 @@
 - Retrofit
 - RxJava
 - Coroutines
+- Dependency Injection - Hilt
+  
